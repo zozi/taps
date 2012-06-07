@@ -180,9 +180,14 @@ class DataStream
   end
 
   def self.parse_json(json)
-    hash = OkJson.decode(json).symbolize_keys
-    hash[:state].symbolize_keys! if hash.has_key?(:state)
-    hash
+    decoded = OkJson.decode(json)
+    if decoded
+      hash = decoded.symbolize_keys
+      hash[:state].symbolize_keys! if hash.has_key?(:state)
+      hash
+    else
+      {}
+    end
   end
 
   def parse_encoded_data(encoded_data, checksum)
